@@ -4,7 +4,7 @@
 			"name":"sotiris",
 			"surname":"evangelou",
 			"age":"22",
-			"email":"sevangelou@inf.uth.gr",
+			"email":"swt@somemail.com",
 			"level":"100",
 			"race":"wood_elf",
 			"class":"nightblade",
@@ -30,11 +30,11 @@
 			}
 		},
 		"king":{
-			"name":"giorgos",
-			"surname":"fragkias",
-			"age":"22",
-			"email":"gfragkias@inf.uth.gr",
-			"level":"100",
+			"name":"james",
+			"surname":"bond",
+			"age":"50",
+			"email":"jb@something.com",
+			"level":"150",
 			"race":"khajit",
 			"class":"nightblade"
 		}
