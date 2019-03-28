@@ -6,6 +6,7 @@
 			"age":"22",
 			"email":"swt@somemail.com",
 			"level":"100",
+			"gold":"30000",
 			"race":"wood_elf",
 			"class":"nightblade",
 			"inventory":{
@@ -33,6 +34,7 @@
 			"name":"james",
 			"surname":"bond",
 			"age":"50",
+			"gold":"10000",
 			"email":"jb@something.com",
 			"level":"150",
 			"race":"khajit",
