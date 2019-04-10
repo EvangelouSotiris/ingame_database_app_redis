@@ -1,0 +1,8 @@
+<h3> Search Players </h3>
+{{#if error}} <span>{{error}}</span>{{/if}}
+<form class='form-inline' method='POST' action='/player/search'>
+	<div class='form-group'>
+		<input type='text' name='alias' class='form-control' placeholder='Search other players by alias'
+	</div>
+	<input type='submit' class='btn btn-primary' value='Search'>
+</form>

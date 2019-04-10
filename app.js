@@ -16,18 +16,7 @@ app.use(body_parser.urlencoded({extended:false}));
 
 app.use(method_override('_method'));
 
-app.get('/', function(req, res, next){
-	res.render('search_users');
-});
-
-app.listen(port, function(){
-	console.log('Server started on port '+ port);
-});
-/*
 var client = redis.createClient(); //create my new client
-var bluebird = require('bluebird')
-bluebird.promisifyAll(redis);
-
 //Connecting to REDIS database
 client.on('connect', function() {
 	console.log('Redis client is now connected. Host:127.0.0.1, Port:6379');
@@ -37,6 +26,71 @@ client.on('error', function(error) {
 	console.log('Redis client did not connect due to error: ' + error);
 });
 
+// Search Page
+app.get('/', function(req, res, next){
+	res.render('searchplayers');
+});
+
+app.listen(port, function(){
+	console.log('Server started on port '+ port);
+});
+
+// Search processing
+app.post('/player/search', function(req,res,next){
+	let alias = req.body.alias;
+	client.hgetall(alias, function(err, obj){
+		if (!obj){
+			res.render('searchplayers',{
+				error : 'Player does not exist.'
+			});
+		}
+		else {
+			obj.alias = alias;
+			res.render('details',{
+				user:obj
+			});
+		}
+	});
+});
+
+app.get('/register', function(req, res, next){
+	res.render('addplayer');
+});
+
+app.post('/register', function(req,res,next){
+	let alias = req.body.alias;
+	let firstname = req.body.firstname;
+	let lastname = req.body.lastname;
+	let email = req.body.email;
+	let race = req.body.race;
+	let pclass = req.body.class;
+	let password = req.body.password;
+
+	client.hmset(alias , [
+		'firstname', firstname,
+		'lastname', lastname,
+		'email', email,
+		'race', race,
+		'class', pclass,
+		'password', password,
+		'gold', 500,
+		'level', 0
+	], function(err,reply){
+		if (err) {
+			console.log(err);
+		}
+		console.log(reply);
+		res.redirect('/');
+	});
+});
+
+app.get('/login', function(req, res, next){
+	res.render('login');
+});
+
+/*
+var bluebird = require('bluebird')
+bluebird.promisifyAll(redis);
 
 function read_json_into_database(filename,client) {  // Giving a .json file this function sets the fields/values in the database
 	var parsed_json_file = require(filename);
