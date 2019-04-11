@@ -82,10 +82,39 @@ app.post('/register', function(req,res,next){
 		console.log(reply);
 		res.redirect('/');
 	});
+
+	alias_inv = alias+'::inventory'
+	client.sadd(alias_inv, 'clothes','potions','weapons', 'ingredients')
 });
 
 app.get('/login', function(req, res, next){
 	res.render('login');
+});
+
+app.post('/login' , function(req, res, next){
+	let alias = req.body.alias;
+	let pass  = req.body.password;
+	client.hget(alias, "password" , function(err, obj){
+		console.log(obj);
+		console.log(pass)
+		if (!obj) {
+			res.render('login',{
+				error : 'alias is incorrect'
+			});
+		}
+		else {
+			if (obj != pass){
+				res.render('login',{
+					error : 'password is incorrect'
+				});	
+				return			
+			} 
+			obj.alias = alias;
+			res.render('ingame',{
+				user:obj
+			});
+		}
+	}.bind( {pass: pass} ));
 });
 
 /*

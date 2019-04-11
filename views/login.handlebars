@@ -1,10 +1,11 @@
-Log in using your credentials and password:
+<h3>Log in using your credentials and password:</h3>
+{{#if error}} <span>{{error}}</span>{{/if}}
 <form class='form' method='POST' action='/login'>
 	<div class='form-group'>
 		<label>Alias</label>
 		<input type='text' name='alias' class='form-control' placeholder='Enter your in-game alias'
 		<label>Password</label>
 		<input type='text' name='password' class='form-control' placeholder='Enter your password'
-		</div>
+	</div>
 	<input type='submit' class='btn btn-primary' value='Log in'>
 </form>
