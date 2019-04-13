@@ -46,9 +46,7 @@ app.post('/player/search', function(req,res,next){
 		}
 		else {
 			obj.alias = alias;
-			res.render('details',{
-				user:obj
-			});
+			res.render('details',{user:obj});
 		}
 	});
 });
@@ -93,7 +91,7 @@ app.post('/register', function(req,res,next){
 
 			alias_inv = alias+'::inventory'
 			client.sadd(alias_inv, 'clothes','potions','weapons', 'ingredients')
-				}
+		}
 	});
 });
 
@@ -116,11 +114,8 @@ app.post('/login' , function(req, res, next){
 					error : 'password is incorrect'
 				});	
 				return			
-			} 
-			obj.alias = alias;
-			res.render('ingame',{
-				user:obj
-			});
+			}
+			res.render('ingame',{layout:'logged', alias: alias});
 		}
-	}.bind( {pass: pass} ));
+	}.bind({pass: pass, alias: alias}));
 });
