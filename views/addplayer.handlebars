@@ -1,6 +1,6 @@
 <h3> Register </h3>
 {{#if error}} <span>{{error}}</span>{{/if}}
-<form class='form' method='POST' action='/register'>
+<form class='form' method='POST' action='/register' autocomplete="off">
 	<div class='form-group'>
 		<label>Alias</label>
 		<input type='text' name='alias' class='form-control' placeholder='Select your in-game alias'
@@ -11,11 +11,32 @@
 		<label>Email</label>
 		<input type='text' name='email' class='form-control' placeholder='Enter your email'
 		<label>Password</label>
-		<input type='text' name='password' class='form-control' placeholder='Enter your password'
+		<input type='password' name='password' class='form-control' placeholder='Enter your password'
 		<label>Race</label>
-		<input type='text' name='race' class='form-control' placeholder='Select your race'
+		<br>
+		<select name="race">
+    		<option value="khajit">Khajit</option>
+    		<option value="argonian">Argonian</option>
+    		<option value="nord">Nord</option>
+    		<option value="bosmer">Bosmer(Wood Elf)</option>
+    		<option value="altmer">Altmer(High Elf)</option>
+    		<option value="dunmer">Dunmer(Dark Elf)</option>
+    		<option value="breton">Breton</option>
+    		<option value="imperial">Imperial</option>
+    		<option value="orsimer">Orsimer(Orc)</option>
+    		<option value="redguard">Redguard</option>
+  		</select>
+		<br>
 		<label>Class</label>
-		<input type='text' name='class' class='form-control' placeholder='Select your class'
+		<br>
+		<select name="class">
+    		<option value="dragonknight">Dragonknight</option>
+    		<option value="sorcerer">Sorcerer</option>
+    		<option value="nightblade">Nightblade</option>
+    		<option value="templar">Templar</option>
+    		<option value="warden">Warden</option>
+  		</select>
+  		<br>
 	</div>
 	<input type='submit' class='btn btn-primary' value='Save'>
 </form>
