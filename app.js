@@ -120,25 +120,47 @@ app.post('/login' , function(req, res, next){
 	}.bind({pass: pass, alias: alias}));
 });
 
-app.get('/loot', function(req, res, next){
-	res.render("loot",{layout:'logged'});
+
+let game_actions = require("./gameobj.json");
+
+app.post('/loot', function(req, res, next){
+	let alias = req.body.alias;
+	let types = Object.keys(game_actions['loot']);
+	let rand_type = types[Math.floor(Math.random() * types.length)];
+	let rand_loot = game_actions['loot'][rand_type][Math.floor(Math.random() * game_actions['loot'][rand_type].length)]
+	res.render("loot",{layout:'logged' , loot:rand_loot});
 });
-app.get('/info', function(req, res, next){
-	res.render("details",{layout:'logged'});
+app.post('/info', function(req, res, next){
+	let alias = req.body.alias;
+	client.hgetall(alias, function(err, obj){
+		obj.alias = alias;
+		res.render("info",{layout:'logged', user: obj});
+	});
 });
-app.get('/inventory', function(req, res, next){
-	res.render("inventory",{layout:'logged'});
+app.post('/inventory', function(req, res, next){
+	let alias = req.body.alias;
+	let actual_key = alias + '::inventory'
+	client.smembers(actual_key, function(err, inv){
+		alias = actual_key.substring(0,actual_key.length-11)
+		client.smembers(actual_key + "::weapons",function(err, weapons){
+			client.smembers(actual_key + "::clothes",function(err, clothes){
+				client.smembers(actual_key + "::ingredients",function(err, ingr){
+					res.render("inventory",{layout:'logged', inv : inv, alias: alias, weapons : weapons, clothes:clothes , ingr:ingr});
+				}.bind({inv : inv, alias: alias, weapons : weapons, clothes:clothes}));
+			}.bind({inv : inv, alias: alias, weapons : weapons}));
+		}.bind({inv : inv, alias: alias}));
+	});
 });
-app.get('/sell', function(req, res, next){
+app.post('/sell', function(req, res, next){
 	res.render("sell",{layout:'logged'});
 });
-app.get('/buy', function(req, res, next){
+app.post('/buy', function(req, res, next){
 	res.render("buy",{layout:'logged'});
 });
-app.get('/trash', function(req, res, next){
+app.post('/trash', function(req, res, next){
 	res.render("trash",{layout:'logged'});
 });
-app.get('/findtreasure', function(req, res, next){
+app.post('/findtreasure', function(req, res, next){
 	res.render("findtreasure",{layout:'logged'});
 });
 

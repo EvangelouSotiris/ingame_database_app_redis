@@ -1,15 +1,41 @@
 <h2> Game actions </h2>
+<style media="screen" type="text/css">
+	input[type=submit] {
+    	width: 20em;  height: 2em;
+	}
+</style>
+<form class='form' action="/loot" method="POST">
+    <input type="hidden" name="alias" value={{alias}}>
+    <input type='submit' class='btn btn-primary' value='Kill enemy and loot his items.'>
+</form>
+<br>
+<form class='form' action="/sell" method="POST">
+    <input type="hidden" name="alias" value={{alias}}>
+    <input type='submit' class='btn btn-primary' value='Sell items.'>
+</form>
+<br>
+<form class='form' action="/buy" method="POST">
+    <input type="hidden" name="alias" value={{alias}}>
+    <input type='submit' class='btn btn-primary' value='Buy items from store.'>
+</form>
+<br>
+<form class='form' action="/trash" method="POST">
+    <input type="hidden" name="alias" value={{alias}}>
+    <input type='submit' class='btn btn-primary' value='Throw away item.'>
+</form>
+<br>
+<form class='form' action="/findtreasure" method="POST">
+    <input type="hidden" name="alias" value={{alias}}>
+    <input type='submit' class='btn btn-primary' value='Find random item in the floor.'>
+</form>
+<br><br><br><br><br><br>
+<form class='form' action="/info" method="POST">
+    <input type="hidden" name="alias" value={{alias}}>
+    <input type='submit' class='btn btn-primary' value='My information'>
+</form>
+<br>
+<form class='form' action="/inventory" method="POST">
+    <input type="hidden" name="alias" value={{alias}}>
+    <input type='submit' class='btn btn-primary' value='My inventory'>
+</form>
 
-<a class='btn btn-default pull-left' href='/loot'>Kill enemy and loot</a>
-<br>
-<a class='btn btn-default pull-left' href='/sell'>Sell items </a>
-<br>
-<a class='btn btn-default pull-left' href='/buy'>Buy items </a>
-<br>
-<a class='btn btn-default pull-left' href='/trash'>Throw away item</a>
-<br>
-<a class='btn btn-default pull-left' href='/findtreasure'>Find random treasure</a>
-<br>
-<a class='btn btn-default pull-left' href='/info'>My information</a>
-<br>
-<a class='btn btn-default pull-left' href='/inventory'>My inventory</a>
