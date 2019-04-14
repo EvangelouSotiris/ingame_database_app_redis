@@ -1,0 +1,8 @@
+{
+	"loot": {
+		"gold":[ 100,200, 300 ],
+		"weapon" : ["sword","axe","bow","mace","staff","spear","helmet","pauldrons","boots","cuirass","greaves","belt"],
+		"ingredients" : ["pure water","corn flower","nightshade","nirnroot","spider egg","wormwood","butterfly wing",
+			"dragonthorn","bugloss","star dew","ichor","alkalhest","grease"]
+	}
+}

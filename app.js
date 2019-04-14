@@ -119,3 +119,27 @@ app.post('/login' , function(req, res, next){
 		}
 	}.bind({pass: pass, alias: alias}));
 });
+
+app.get('/loot', function(req, res, next){
+	res.render("loot",{layout:'logged'});
+});
+app.get('/info', function(req, res, next){
+	res.render("details",{layout:'logged'});
+});
+app.get('/inventory', function(req, res, next){
+	res.render("inventory",{layout:'logged'});
+});
+app.get('/sell', function(req, res, next){
+	res.render("sell",{layout:'logged'});
+});
+app.get('/buy', function(req, res, next){
+	res.render("buy",{layout:'logged'});
+});
+app.get('/trash', function(req, res, next){
+	res.render("trash",{layout:'logged'});
+});
+app.get('/findtreasure', function(req, res, next){
+	res.render("findtreasure",{layout:'logged'});
+});
+
+
