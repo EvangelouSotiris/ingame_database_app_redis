@@ -128,7 +128,15 @@ app.post('/loot', function(req, res, next){
 	let types = Object.keys(game_actions['loot']);
 	let rand_type = types[Math.floor(Math.random() * types.length)];
 	let rand_loot = game_actions['loot'][rand_type][Math.floor(Math.random() * game_actions['loot'][rand_type].length)]
-	res.render("loot",{layout:'logged' , loot:rand_loot});
+	client.hincrby(alias, "level", 1)
+	if (rand_type == 'gold') {
+		client.hincrby(alias, "gold" , rand_loot);
+		res.render("loot",{layout:'logged' , loot:rand_loot, money: true, levelup : true});
+	}
+	else {
+		client.sadd(alias + '::inventory::' + rand_type, rand_loot);
+		res.render("loot",{layout:'logged' , loot:rand_loot, levelup : true});
+	}
 });
 app.post('/info', function(req, res, next){
 	let alias = req.body.alias;
@@ -158,10 +166,22 @@ app.post('/buy', function(req, res, next){
 	res.render("buy",{layout:'logged'});
 });
 app.post('/trash', function(req, res, next){
+	//use SREM
 	res.render("trash",{layout:'logged'});
 });
 app.post('/findtreasure', function(req, res, next){
-	res.render("findtreasure",{layout:'logged'});
+	let alias = req.body.alias;
+	let types = Object.keys(game_actions['find']);
+	let rand_type = types[Math.floor(Math.random() * types.length)];
+	let rand_loot = game_actions['find'][rand_type][Math.floor(Math.random() * game_actions['find'][rand_type].length)]
+	if (rand_type == 'gold') {
+		client.hincrby(alias, "gold" , rand_loot);
+		res.render("loot",{layout:'logged' , loot:rand_loot, money: true, levelup : false});
+	}
+	else {
+		client.sadd(alias + '::inventory::' + rand_type, rand_loot);
+		res.render("loot",{layout:'logged' , loot:rand_loot, levelup : false});
+	}
 });
 
 

@@ -2,9 +2,12 @@
 	"loot": {
 		"gold":[ 100,200, 300 ],
 		"weapons" : ["sword","axe","bow","mace","staff","spear"],
-		"clothes" : ["helmet","pauldrons","boots","cuirass","greaves","belt"],
-		"ingredients" : ["pure_water","corn_flower","nightshade","nirnroot","spider_egg","wormwood","butterfly_wing",
-			"dragonthorn","bugloss","star_dew","ichor","alkalhest","grease"]
+		"clothes" : ["helmet","pauldrons","boots","cuirass","greaves","belt"]
+	},
+	"find": {
+		"gold":[ 50,100, 150 ],
+		"weapons" : ["sword","mace","spear"],
+		"ingredients" : ["pure water","corn flower","nightshade","nirnroot","spider egg","wormwood","butterfly wing","dragonthorn","bugloss","star dew","ichor","alkalhest","grease"]
 	},
 	"store": {
 		"buy" : {
@@ -20,7 +23,7 @@
 			"cuirass" : 350,
 			"greaves" : 300,
 			"belt" : 200,
-			"pure_water" : 100,
+			"pure water" : 100,
 			"nightshade" : 400,
 			"dragonthorn" : 550,
 			"grease" : 100,
@@ -39,14 +42,14 @@
 			"cuirass" : 175,
 			"greaves" : 150,
 			"belt" : 100,
-			"pure_water" : 50,
-			"corn_flower" : 100,
+			"pure water" : 50,
+			"corn flower" : 100,
 			"nightshade" : 200,
 			"nirnroot" : 200,
-			"spider_egg" : 175,
+			"spider egg" : 175,
 			"wormwood" : 125,
-			"butterfly_wing" : 250,
-			"star_dew" : 300,
+			"butterfly wing" : 250,
+			"star dew" : 300,
 			"ichor" : 100,
 			"alkalhest" : 300,
 			"dragonthorn" : 275,

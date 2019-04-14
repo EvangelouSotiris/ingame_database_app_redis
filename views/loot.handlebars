@@ -1,1 +1,19 @@
-You looted a {{loot}}
+{{#if money}} 
+{{#if levelup}}
+<h3> You looted {{loot}} gold. </h3> <br> 
+{{else}}
+<h3> You found {{loot}} gold. </h3> <br> 
+{{/if}}
+{{else}}
+{{#if levelup}}
+<h3> You looted {{loot}}. </h3> <br> 
+{{else}}
+<h3> You found {{loot}}. </h3> <br> 
+{{/if}}
+{{/if}}
+
+{{#if levelup}}
+<strong> You have leveled up. </strong> <br>
+{{/if}}
+Your inventory has been updated. <br> <br> <br> <br> <br> <br> <br>
+Return to the game actions interface.
