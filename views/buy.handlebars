@@ -1,1 +1,76 @@
-buy
+<h2> Store </h2>
+{{#if error}} <span>{{error}}</span>{{/if}}
+
+<h3> Weapons </h3>
+<table class="table table-bordered table-hover table-condensed">
+<thead><tr>
+<th title="Field #1">Sword</th>
+<th title="Field #2">Axe</th>
+<th title="Field #3">Bow</th>
+<th title="Field #4">Mace</th>
+<th title="Field #5">Staff</th>
+<th title="Field #6">Spear</th>
+</tr></thead>
+<tbody><tr>
+<td>100</td>
+<td>200</td>
+<td>250</td>
+<td>150</td>
+<td>300</td>
+<td>200</td>
+</tr>
+</tbody></table>
+
+<br>
+
+<h3> Clothes </h3>
+<table class="table table-bordered table-hover table-condensed">
+<thead><tr>
+<th title="Field #7">Helmet</th>
+<th title="Field #8">Pauldrons</th>
+<th title="Field #9">Boots</th>
+<th title="Field #10">Cuirass</th>
+<th title="Field #11">Greaves</th>
+<th title="Field #12">Belt</th>
+</tr></thead>
+<tbody><tr>
+<td>150</td>
+<td>100</td>
+<td>250</td>
+<td>350</td>
+<td>300</td>
+<td>200</td>
+</tr>
+</tbody></table>
+
+<br>
+
+<h3> Ingredients </h3>
+<table class="table table-bordered table-hover table-condensed">
+<thead><tr>
+<th title="Field #13">Pure water</th>
+<th title="Field #14">Nightshade</th>
+<th title="Field #15">Dragonthorn</th>
+<th title="Field #16">Grease</th>
+<th title="Field #17">Bugloss</th>
+</tr></thead>
+<tbody><tr>
+<td>100</td>
+<td>400</td>
+<td>550</td>
+<td>100</td>
+<td>200</td>
+</tr>
+</tbody></table>
+
+<form class='form' method='POST' action='/buy'>
+	<label>Welcome to the game store. What do you want to buy?</label>
+	<input type='text' name='item_for_purchase' class='form-control' placeholder='Enter the item for purchase'>
+	<input type="hidden" name="alias" value={{alias}}>
+	<input type='submit' class='btn btn-primary' value='Buy'>
+</form>
+<form class='form' method='POST' action='/buy'>
+	<input type="hidden" name="alias" value={{alias}}>
+	<input type="hidden" name="homescreen" value=1>
+	<input type='submit' class='btn btn-primary' value='Back'>
+</form>

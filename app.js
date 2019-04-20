@@ -160,10 +160,75 @@ app.post('/inventory', function(req, res, next){
 	});
 });
 app.post('/sell', function(req, res, next){
-	res.render("sell",{layout:'logged'});
+	let alias = req.body.alias;
+	let actual_key = alias + '::inventory'
+	let sell_table = game_actions['store']['sell']
+	client.smembers(actual_key, function(err, inv){
+		alias = actual_key.substring(0,actual_key.length-11)
+		client.smembers(actual_key + "::weapons",function(err, weapons){
+			var dict = {};
+			for (i in weapons) {
+				dict[weapons[i]] = sell_table[weapons[i]];
+			}
+			client.smembers(actual_key + "::clothes",function(err, clothes){
+				for (i in clothes) {
+					dict[clothes[i]] = sell_table[clothes[i]];
+				}	
+				client.smembers(actual_key + "::ingredients",function(err, ingredients){
+					for (i in ingredients) {
+						dict[ingredients[i]] = sell_table[ingredients[i]];
+					}	
+					var list = []
+					list.push(dict)
+					res.render("sell",{layout:'logged', list : list});
+					return;
+				}.bind({inv : inv, alias: alias, dict : dict}));
+			}.bind({inv : inv, alias: alias, dict : dict}));
+		}.bind({inv : inv, alias: alias, sell_table: sell_table}));
+	});
 });
+
 app.post('/buy', function(req, res, next){
-	res.render("buy",{layout:'logged'});
+	let alias = req.body.alias;
+	if (req.body.homescreen){
+		res.render('ingame',{layout:'logged', alias: alias});
+		return;
+	}
+	if (req.body.item_for_purchase){
+		let item_for_purchase = req.body.item_for_purchase;
+		let item = req.body.item_for_purchase.toLowerCase();
+		if (item in game_actions['store']['buy']) {
+			let price = game_actions['store']['buy'][item]
+			client.hget(alias, 'gold', function(err, obj){
+				if (obj >= price) {
+					client.hincrby(alias, "gold" , -price);
+					if (game_actions['loot']['weapons'].includes(item)) {
+						client.sadd(alias + '::inventory::weapons', item);
+					}
+					if (game_actions['loot']['clothes'].includes(item)) {
+						client.sadd(alias + '::inventory::clothes', item)
+					}
+					if (game_actions['find']['ingredients'].includes(item)) {
+						client.sadd(alias + '::inventory::ingredients', item)
+					}
+					res.render("buy",{layout:'logged', alias: alias, error : 'The purchase has been made'});
+					return;
+				}
+				else {
+					res.render("buy",{layout:'logged', alias: alias, error : 'You don\'t have enough gold for this purchase.'});
+					return;
+				}
+			}.bind({price : price, alias : alias, item: item, game_actions : game_actions}));
+		}
+		else {
+			res.render("buy",{layout:'logged', alias: alias, error : 'The item you chose doesn\'t exist'});
+			return;
+		}
+	}
+	else {
+		res.render("buy",{layout:'logged', alias: alias});
+		return;
+	}
 });
 app.post('/trash', function(req, res, next){
 	//use SREM
