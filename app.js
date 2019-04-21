@@ -159,33 +159,123 @@ app.post('/inventory', function(req, res, next){
 		}.bind({inv : inv, alias: alias}));
 	});
 });
-app.post('/sell', function(req, res, next){
-	let alias = req.body.alias;
-	let actual_key = alias + '::inventory'
-	let sell_table = game_actions['store']['sell']
+
+function display_sell_info(actual_key, sell_table,req, res, error="Nothing"){
+	console.log(actual_key)
 	client.smembers(actual_key, function(err, inv){
 		alias = actual_key.substring(0,actual_key.length-11)
 		client.lrange(actual_key + "::weapons",0,-1,function(err, weapons){
-			var dict = {};
+			var dict = {'weapons':{},'clothes':{},'ingredients':{}};
 			for (i in weapons) {
-				dict[weapons[i]] = sell_table[weapons[i]];
+				dict['weapons'][weapons[i]] = sell_table[weapons[i]];
 			}
 			client.lrange(actual_key + "::clothes",0,-1,function(err, clothes){
 				for (i in clothes) {
-					dict[clothes[i]] = sell_table[clothes[i]];
+					dict['clothes'][clothes[i]] = sell_table[clothes[i]];
 				}	
 				client.lrange(actual_key + "::ingredients",0,-1,function(err, ingredients){
 					for (i in ingredients) {
-						dict[ingredients[i]] = sell_table[ingredients[i]];
-					}	
-					var list = []
-					list.push(dict)
-					res.render("sell",{layout:'logged', list : list});
-					return;
+						dict['ingredients'][ingredients[i]] = sell_table[ingredients[i]];
+					}
+					if (error == "Nothing"){
+						res.render("sell",{
+							layout:'logged', 
+							alias : alias,
+							weapons : dict['weapons'], 
+							clothes: dict['clothes'], 
+							ingredients: dict['ingredients']
+						});
+						return;
+					}
+					else {
+						res.render("sell",{
+							layout:'logged',
+							alias : alias,
+							weapons : dict['weapons'], 
+							clothes: dict['clothes'], 
+							ingredients: dict['ingredients'],
+							error : error
+						});
+						return;
+					}
 				}.bind({inv : inv, alias: alias, dict : dict}));
 			}.bind({inv : inv, alias: alias, dict : dict}));
 		}.bind({inv : inv, alias: alias, sell_table: sell_table}));
 	});
+}
+
+app.post('/sell', function(req, res, next){
+	let alias = req.body.alias;
+	let actual_key = alias + '::inventory'
+	let sell_table = game_actions['store']['sell']
+	if (req.body.homescreen){
+		res.render('ingame',{layout:'logged', alias: alias});
+		return;
+	}
+	if (req.body.item_to_sell){
+		let item_to_sell = req.body.item_to_sell;
+		if (item_to_sell in sell_table){
+			client.smembers(actual_key, function(err, inv){
+				alias = actual_key.substring(0,actual_key.length-11)
+				client.lrange(actual_key + "::weapons",0,-1,function(err, weapons){
+					var dict = {'weapons':{},'clothes':{},'ingredients':{}};
+					for (i in weapons) {
+						dict['weapons'][weapons[i]] = sell_table[weapons[i]];
+					}
+					client.lrange(actual_key + "::clothes",0,-1,function(err, clothes){
+						for (i in clothes) {
+							dict['clothes'][clothes[i]] = sell_table[clothes[i]];
+						}	
+						client.lrange(actual_key + "::ingredients",0,-1,function(err, ingredients){
+							for (i in ingredients) {
+								dict['ingredients'][ingredients[i]] = sell_table[ingredients[i]];
+							}	
+							if (item_to_sell in dict['weapons'] || item_to_sell in dict['clothes'] || item_to_sell in dict['ingredients']){
+								client.hincrby(alias, "gold",sell_table[item_to_sell]);
+								if (item_to_sell in dict['weapons']){
+									client.lrem(alias+"::inventory::weapons" , 1, item_to_sell);
+								}
+								if (item_to_sell in dict['clothes']){
+									client.lrem(alias+"::inventory::clothes" , 1, item_to_sell);
+								}
+								if (item_to_sell in dict['ingredients']){
+									client.lrem(alias+"::inventory::ingredients" , 1, item_to_sell);
+								}
+
+								res.render("sell",{
+									layout:'logged',
+									alias : alias,
+									weapons : dict['weapons'], 
+									clothes: dict['clothes'], 
+									ingredients: dict['ingredients'],
+									error : "The item has been sold."
+								});
+								return;
+							}
+
+							else {
+								res.render("sell",{
+									layout:'logged', 
+									alias : alias,
+									weapons : dict['weapons'], 
+									clothes: dict['clothes'], 
+									ingredients: dict['ingredients'],
+									error : "You don't possess the item."
+								});
+								return;
+							}
+						}.bind({inv : inv, alias: alias, dict : dict, item_to_sell:item_to_sell}));
+					}.bind({inv : inv, alias: alias, dict : dict, item_to_sell:item_to_sell}));
+				}.bind({inv : inv, alias: alias, sell_table: sell_table, item_to_sell: item_to_sell}));
+			});
+		}
+		else {
+			display_sell_info(actual_key, sell_table, req,res, error="The item doesn't exist.");
+		}
+	}
+	else{
+		display_sell_info(actual_key, sell_table,req, res);
+	}
 });
 
 app.post('/buy', function(req, res, next){
@@ -230,10 +320,7 @@ app.post('/buy', function(req, res, next){
 		return;
 	}
 });
-app.post('/trash', function(req, res, next){
-	//use SREM
-	res.render("trash",{layout:'logged'});
-});
+
 app.post('/findtreasure', function(req, res, next){
 	let alias = req.body.alias;
 	let types = Object.keys(game_actions['find']);

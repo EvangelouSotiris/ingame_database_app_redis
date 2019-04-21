@@ -1,2 +1,58 @@
-{{list}}
-sell stuff
+<head>
+<style>
+div.relative{
+    width:500px;
+    height:500px;
+    margin-right:50px;
+    float:left;
+    display:inline-block;
+}
+</style>
+</head>
+<body>
+
+<div class="relative">
+	<h4> Weapons Owned </h4>
+	<ul title="Weapons" class="list-group">
+	  {{#each weapons}}
+	  	<li class="list-group-item d-flex justify-content-between align-items-center">
+	    	{{@key}}
+	    	<span class="badge badge-primary badge-pill">can sell for {{this}} gold</span>
+	  	</li>
+	  {{/each}}
+	</ul>
+	<h4> Clothes Owned </h4>
+	<ul class="list-group">
+	  {{#each clothes}}
+	    <li class="list-group-item d-flex justify-content-between align-items-center">
+	    	{{@key}}
+	    	<span class="badge badge-primary badge-pill">can sell for {{this}} gold</span>
+	  	</li>
+	  {{/each}}
+	</ul>
+	<h4> Ingredients Owned </h4>
+	<ul class="list-group">
+	  {{#each ingredients}}
+	    <li class="list-group-item d-flex justify-content-between align-items-center">
+	    	{{@key}}
+	    	<span class="badge badge-primary badge-pill">can sell for {{this}} gold</span>
+	  	</li>
+	  {{/each}}
+	</ul>
+</div>
+<div class="relative">
+	<br><br>
+	<form class='form' method='POST' action='/sell'>
+		<input type="hidden" name="alias" value={{alias}}>
+		<input type='text' name='item_to_sell' class='form-control' placeholder='Enter the item for selling'>
+		<input type='submit' class='btn btn-primary' value='Sell'>
+	</form>
+	<form class='form' method='POST' action='/buy'>
+		<input type="hidden" name="alias" value={{alias}}>
+		<input type="hidden" name="homescreen" value=1>
+		<input type='submit' class='btn btn-primary' value='Back'>
+	</form>
+	{{#if error}} <span>{{error}}</span>{{/if}}
+</div>
+</body>
+
