@@ -161,7 +161,6 @@ app.post('/inventory', function(req, res, next){
 });
 
 function display_sell_info(actual_key, sell_table,req, res, error="Nothing"){
-	console.log(actual_key)
 	client.smembers(actual_key, function(err, inv){
 		alias = actual_key.substring(0,actual_key.length-11)
 		client.lrange(actual_key + "::weapons",0,-1,function(err, weapons){
