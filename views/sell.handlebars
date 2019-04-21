@@ -21,6 +21,7 @@ div.relative{
 	  	</li>
 	  {{/each}}
 	</ul>
+	<br>
 	<h4> Clothes Owned </h4>
 	<ul class="list-group">
 	  {{#each clothes}}
@@ -30,6 +31,7 @@ div.relative{
 	  	</li>
 	  {{/each}}
 	</ul>
+	<br>
 	<h4> Ingredients Owned </h4>
 	<ul class="list-group">
 	  {{#each ingredients}}
@@ -47,6 +49,7 @@ div.relative{
 		<input type='text' name='item_to_sell' class='form-control' placeholder='Enter the item for selling'>
 		<input type='submit' class='btn btn-primary' value='Sell'>
 	</form>
+	<br>
 	<form class='form' method='POST' action='/buy'>
 		<input type="hidden" name="alias" value={{alias}}>
 		<input type="hidden" name="homescreen" value=1>
