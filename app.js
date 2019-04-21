@@ -134,7 +134,7 @@ app.post('/loot', function(req, res, next){
 		res.render("loot",{layout:'logged' , loot:rand_loot, money: true, levelup : true});
 	}
 	else {
-		client.sadd(alias + '::inventory::' + rand_type, rand_loot);
+		client.lpush(alias + '::inventory::' + rand_type, rand_loot);
 		res.render("loot",{layout:'logged' , loot:rand_loot, levelup : true});
 	}
 });
@@ -150,9 +150,9 @@ app.post('/inventory', function(req, res, next){
 	let actual_key = alias + '::inventory'
 	client.smembers(actual_key, function(err, inv){
 		alias = actual_key.substring(0,actual_key.length-11)
-		client.smembers(actual_key + "::weapons",function(err, weapons){
-			client.smembers(actual_key + "::clothes",function(err, clothes){
-				client.smembers(actual_key + "::ingredients",function(err, ingr){
+		client.lrange(actual_key + "::weapons",0,-1,function(err, weapons){
+			client.lrange(actual_key + "::clothes",0,-1,function(err, clothes){
+				client.lrange(actual_key + "::ingredients",0,-1,function(err, ingr){
 					res.render("inventory",{layout:'logged', inv : inv, alias: alias, weapons : weapons, clothes:clothes , ingr:ingr});
 				}.bind({inv : inv, alias: alias, weapons : weapons, clothes:clothes}));
 			}.bind({inv : inv, alias: alias, weapons : weapons}));
@@ -165,16 +165,16 @@ app.post('/sell', function(req, res, next){
 	let sell_table = game_actions['store']['sell']
 	client.smembers(actual_key, function(err, inv){
 		alias = actual_key.substring(0,actual_key.length-11)
-		client.smembers(actual_key + "::weapons",function(err, weapons){
+		client.lrange(actual_key + "::weapons",0,-1,function(err, weapons){
 			var dict = {};
 			for (i in weapons) {
 				dict[weapons[i]] = sell_table[weapons[i]];
 			}
-			client.smembers(actual_key + "::clothes",function(err, clothes){
+			client.lrange(actual_key + "::clothes",0,-1,function(err, clothes){
 				for (i in clothes) {
 					dict[clothes[i]] = sell_table[clothes[i]];
 				}	
-				client.smembers(actual_key + "::ingredients",function(err, ingredients){
+				client.lrange(actual_key + "::ingredients",0,-1,function(err, ingredients){
 					for (i in ingredients) {
 						dict[ingredients[i]] = sell_table[ingredients[i]];
 					}	
@@ -203,13 +203,13 @@ app.post('/buy', function(req, res, next){
 				if (obj >= price) {
 					client.hincrby(alias, "gold" , -price);
 					if (game_actions['loot']['weapons'].includes(item)) {
-						client.sadd(alias + '::inventory::weapons', item);
+						client.lpush(alias + '::inventory::weapons', item);
 					}
 					if (game_actions['loot']['clothes'].includes(item)) {
-						client.sadd(alias + '::inventory::clothes', item)
+						client.lpush(alias + '::inventory::clothes', item)
 					}
 					if (game_actions['find']['ingredients'].includes(item)) {
-						client.sadd(alias + '::inventory::ingredients', item)
+						client.lpush(alias + '::inventory::ingredients', item)
 					}
 					res.render("buy",{layout:'logged', alias: alias, error : 'The purchase has been made'});
 					return;
@@ -244,7 +244,7 @@ app.post('/findtreasure', function(req, res, next){
 		res.render("loot",{layout:'logged' , loot:rand_loot, money: true, levelup : false});
 	}
 	else {
-		client.sadd(alias + '::inventory::' + rand_type, rand_loot);
+		client.lpush(alias + '::inventory::' + rand_type, rand_loot);
 		res.render("loot",{layout:'logged' , loot:rand_loot, levelup : false});
 	}
 });
