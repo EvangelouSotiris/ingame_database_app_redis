@@ -35,4 +35,4 @@ At this point the user can search for other users ,register a new account,login 
 -
 
 # Authors
-* **Evangelou Sotiris** - *Developer* - [Github](https://github.com/EvangelouSotiris)
+**Evangelou Sotiris** - *Developer* - [Github](https://github.com/EvangelouSotiris)
