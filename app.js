@@ -262,12 +262,15 @@ app.post('/sell', function(req, res, next){
 								client.hincrby(alias, "gold",sell_table[item_to_sell]);
 								if (item_to_sell in dict['weapons']){
 									client.lrem(alias+"::inventory::weapons" , 1, item_to_sell);
+									delete dict['weapons'][item_to_sell]
 								}
 								if (item_to_sell in dict['clothes']){
 									client.lrem(alias+"::inventory::clothes" , 1, item_to_sell);
+									delete dict['clothes'][item_to_sell]
 								}
 								if (item_to_sell in dict['ingredients']){
 									client.lrem(alias+"::inventory::ingredients" , 1, item_to_sell);
+									delete dict['ingredients'][item_to_sell]
 								}
 
 								res.render("sell",{
