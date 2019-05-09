@@ -1,5 +1,5 @@
-# Redis database for handling users and their in-game data (creds/weapons/gold/clothes etc)
-Project of creating a Redis database for users and their in-game data for ECE428 course.
+# Redis database application for handling users and their in-game data
+Project of creating a Redis database for users and their in-game data for the ECE428 course.
 
 # Prerequisites
 > NodeJS and NPM
@@ -32,7 +32,7 @@ Then open your favourite browser to localhost:3000 and explore the app. **enjoy*
 At this point the user can search for other users ,register a new account,login with his password, and do certain game actions such as looting an enemy, finding treasures, buying from stores, selling to stores and viewing his info and inventory.
 
 # Todo list
--
+- Finished Project. No Imminent TODO actions.
 
 # Authors
 **Evangelou Sotiris** - *Developer* - [Github](https://github.com/EvangelouSotiris)
