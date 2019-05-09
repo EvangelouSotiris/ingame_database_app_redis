@@ -15,6 +15,9 @@ If running in Linux (I use Ubuntu 18.04 or 19.04), in /etc/redis/redis.conf you 
 ```
 supervised systemd
 ```
+# Troubleshooting
+- This application and redis installation has not been tested in Windows OS. <br>
+- If the port 3000 has a service already running on it, please change it in the code to run your web app.
 
 # Run
 Firstly, clone the project by using:
